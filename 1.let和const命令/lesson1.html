@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /**
+     * let 命令用来生命变量，所声明的变量只在let命令所在的代码块内有效
+     * 不存在变量提升,let所声明的变量一定要在声明后使用，否则报错
+     * 暂时性死去,只要块级作用域内存在let命令，它所声明的变量就“绑定”（binding）这个区域，不再受外部的影响。
+     * 不允许重复声明,let不允许在相同作用域内，重复声明同一个变量。
+     **/
+
+    // 使用var声明
+    var a = [];
+    for (var i = 0; i < 10; i++) {
+      a[i] = function () {
+        console.log(i)
+      }
+    }
+    a[6]() // 10, 函数输出的是最后一次循环出来的全局变量i,所有的值都为10
+
+    // 使用let声明
+    var b = [];
+    for (let j = 0; j < 10; j++) {
+      b[j] = function () {
+        console.log(j)
+      }
+    }
+    b[6]() // 6
+
+    // 不存在变量提升
+    // console.log(bar)
+    let bar = 'hello'  // bar is not defined
+
+    // 暂时性死区, 存在全局变量tmp,对tmp赋值会报错
+    var tmp = 123
+    if (true) {
+      // tmp = 'abc';  // tmp is not defined
+      let tmp;
+    }
+
+    // 不允许重复声明
+    // 报错
+    // function func() {
+    //   // let a = 10;
+    //   // var a = 1;
+    //   // let a = 5  
+    // }
+
+    // 报错
+    // function func(arg) {
+    //   let arg
+    // }
+    // func()
+
+    // 不报错
+    function fund(arg) {
+      {
+        let arg
+      }
+    }
+    fund()
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /**
+     * 函数参数的解构赋值
+     **/
+
+    // 例子一
+    {
+      function add([x, y]) {
+        return x + y;
+      }
+      add([1, 2]); // 3
+    }
+
+    // 例子二
+    {
+      [[1, 2], [3, 4]].map(([a, b]) => a + b); // [3, 7]
+    }
+
+    // 函数参数的解构也可以使用默认值
+    {
+      function move({ x = 0, y = 0 } = {}) {
+        return [x, y];
+      }
+      move({ x: 3, y: 8 }); // [3, 8]
+      move({ x: 3 }); // [3, 0]
+      move({}); // [0, 0]
+      move(); // [0, 0]
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /**
+     * 用途
+     * - 交换变量的值
+     * - 从函数返回多个值
+     * - 函数参数的定义
+     * - 提取JSON数据
+     * - 提取JSON数据
+     * - 函数参数的默认值
+     * - 遍历map结构
+     * - 输入模块的指定方法
+     **/
+    {
+      // 交换变量的值
+      let x = 1;
+      let y = 2;
+      [x, y] = [y, x]
+      console.log(x, y)
+    }
+
+    {
+      // 从函数返回多个值
+      // 返回一个数组
+      function exampleArr() {
+        return [1, 2, 3];
+      }
+      let [a, b, c] = exampleArr(); // a = 1, b = 2, c = 3
+
+      // 返回一个对象
+      function exampleObj() {
+        return {
+          foo: 1,
+          bar: 2
+        };
+      }
+      let { foo, bar } = exampleObj(); // foo = 1, bar = 2
+    }
+
+    {
+      // 函数参数的定义
+      // 参数是一组有次序的值
+      function f1([x, y, z]) { }
+      f1([1, 2, 3]);
+
+      // 参数是一组无次序的值
+      function f2({ x, y, z }) { }
+      f2({ z: 3, y: 2, x: 1 })
+    }
+
+    {
+      // 提取JSON数据
+      let jsonData = {
+        id: 42,
+        status: 'OK',
+        data: [867, 5309]
+      }
+      let { id, status, data: number } = jsonData; // id = 42, status = 'ok', number=[867, 5309]
+    }
+
+    {
+      // 函数参数的默认值
+      // jQuery.ajax = function (url, {
+      //   async = true,
+      //   beforeSend = function () { },
+      //   cache = true,
+      //   complete = function () { },
+      //   crossDomain = false,
+      //   global = true,
+      //   // ... more config
+      // } = {}) {
+      //   // ... do stuff
+      // };
+    }
+
+    {
+      // 遍历map结构
+      const map = new Map();
+      map.set('first', 'hello');
+      map.set('second', 'world');
+      for (let [key, value] of map) {
+        console.log(key + " is " + value)
+      }
+    }
+
+    {
+      // 输入模块的指定方法
+      // const { SourceMapConsumer, SourceNode } = require("source-map");
+    }
+  </script>
+</body>
+
+</html>

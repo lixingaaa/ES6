@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /**
+     * 圆括号问题
+     **/
+
+    // 不能使用圆括号的情况
+    // (1)变量声明语句
+    {
+      // 全部报错
+      // let [(a)] = [1];
+
+      // let {x: (c)} = {};
+      // let ({x: c}) = {};
+      // let {(x: c)} = {};
+      // let {(x): c} = {};
+
+      // let { o: ({ p: p }) } = { o: { p: 2 } };
+    }
+    // (2)函数参数
+    {
+      // function f([(z)]) { return z;}
+      // function f([z, (x)]) { return x;}
+    }
+    // (3)赋值语句的模式
+    {
+      // ({p:a}) = {p: 42};
+      // ([a]) = [5];
+    }
+
+    // 可使用圆括号的情况
+    {
+      [(b)] = [3]; // 模式是取数组的第一个成员，跟圆括号无关；
+      [{ p: (d) } = {}]; // 模式是p，而不是d；
+      [(parseInt.prop)] = [3]; // 与第一行语句的性质一致。
+    }
+  </script>
+</body>
+
+</html>
