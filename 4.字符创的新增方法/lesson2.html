@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /**
+     * String.raw()
+     * 该方法返回一个斜杠都被转义（即斜杠前面再加一个斜杠）的字符串，往往用于模板字符串的处理方法。
+     **/
+    String.raw`Hi\n${2 + 3}!`;
+    // 返回 "Hi\\n5!"
+
+    String.raw`Hi\u000A!`;
+    // 返回 "Hi\\u000A!"
+
+    // 作为函数，String.raw()的代码实现基本如下 
+    String.raw = function (strings, ...values) {
+      let output = '';
+      let index;
+      for (index = 0; index < values.length; index++) {
+        output += strings.raw[index] + values[index];
+      }
+
+      output += strings.raw[index]
+      return output;
+    }
+  </script>
+</body>
+
+</html>

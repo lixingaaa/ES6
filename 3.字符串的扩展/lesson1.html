@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /**
+     * 字符的 Unicode 表示法
+     * ES6 加强了对 Unicode 的支持，允许采用\uxxxx形式表示一个字符，其中xxxx表示字符的 Unicode 码点。
+     * 这种表示法只限于码点在\u0000~\uFFFF之间的字符。超出这个范围的字符，必须用两个双字节的形式表示。
+     **/
+
+    {
+      // 采用\uxxxx形式表示一个字符
+      "u0061"; // a
+      // 两个双字节的形式表示
+      "\uD842\uDFB7" // 𠮷
+      // 如果直接在\u后面跟上超过0xFFFF的数值（比如\u20BB7），JavaScript 会理解成\u20BB+7。由于\u20BB是一个不可打印字符
+      "\u20BB7" // 7
+      // 将码点放入大括号，就能正确解读该字符
+      '\u{20BB7}' // 吉
+      '\u{41}\u{42}\u{43}' // ABC
+    }
+  </script>
+</body>
+
+</html>

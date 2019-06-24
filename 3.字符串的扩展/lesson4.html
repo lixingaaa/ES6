@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /**
+     * JSON.stringify()的改造
+     * 根据标准，JSON 数据必须是 UTF-8 编码。但是，现在的JSON.stringify()方法有可能返回不符合 UTF-8 标准的字符串。
+     * 为了确保返回的是合法的 UTF-8 字符，ES2019 改变了JSON.stringify()的行为。
+     * 如果遇到0xD800到0xDFFF之间的单个码点，或者不存在的配对形式，它会返回转义字符串，留给应用自己决定下一步的处理。
+     **/
+    JSON.stringify('\u{D834}') // ""\\uD834""
+    JSON.stringify('\uDF06\uD834') // ""\\udf06\\ud834""
+  </script>
+</body>
+
+</html>

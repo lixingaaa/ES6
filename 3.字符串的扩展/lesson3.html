@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /**
+     * 直接输入 U+2028 和 U+2029
+     * JavaScript 字符串允许直接输入字符，以及输入字符的转义形式。
+     * JavaScript 规定有5个字符，不能在字符串里面直接使用，只能使用转义形式。
+     *   - U+005C：反斜杠（reverse solidus)
+     *   - U+000D：回车（carriage return）
+     *   - U+2028：行分隔符（line separator）
+     *   - U+2029：段分隔符（paragraph separator）
+     *   - U+000A：换行符（line feed）
+     **/
+    {
+      // “中”的 Unicode 码点是 U+4e2d，你可以直接在字符串里面输入这个汉字，也可以输入它的转义形式\u4e2d，两者是等价的。
+      console.log('中' === '\u4e2d')
+    }
+
+    {
+      // JavaScript 规定有5个字符，不能在字符串里面直接使用，只能使用转义形式。
+
+    }
+  </script>
+</body>
+
+</html>

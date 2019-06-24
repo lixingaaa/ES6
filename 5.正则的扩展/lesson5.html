@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /**
+     * y 修饰符
+     * ES6 还为正则表达式添加了y修饰符，叫做“粘连”（sticky）修饰符。
+     * **/
+    var s = 'aaa_aa_a';
+    var r1 = /a+/g;
+    var r2 = /a+/y;
+
+    r1.exec(s) // ["aaa"]
+    r2.exec(s) // ["aaa"]
+
+    r1.exec(s) // ["aa"]
+    r2.exec(s) // null
+  </script>
+</body>
+
+</html>

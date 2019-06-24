@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /**
+     * 函数参数的默认值
+     * ES6 允许为函数的参数设置默认值，即直接写在参数定义的后面。
+     * 优点：
+     *   阅读代码的人，可以立刻意识到哪些参数是可以省略的，不用查看函数体或文档；
+     *   有利于将来的代码优化，即使未来的版本在对外接口中，彻底拿掉这个参数，也不会导致以前的代码无法运行。
+     * 通常情况下，定义了默认值的参数，应该是函数的尾参数。
+     * **/
+
+    /**
+     * ES6 之前，不能直接为函数的参数指定默认值，只能采用变通的方法。
+     * 缺点: 如果参数y赋值了，但是对应的布尔值为false，则该赋值不起作用
+     * 通常需要先判断一下参数y是否被赋值，如果没有，再等于默认值。
+     * **/
+    {
+      function log(x, y) {
+        y = y || 'world';
+        console.log(x, y)
+      }
+      log('Hello')
+      log('Hello', 'china')
+      log('Hello', '')
+    }
+
+    // ES6写法
+    {
+      function log(x, y = 'World') {
+        console.log(x, y)
+      }
+      log('Hello')
+      log('Hello', 'china')
+      log('Hello', '')
+    }
+
+    // 参数变量是默认声明的，所以不能用let或const再次声明。
+    // function foo(x = 5) {
+    //   let x = 1; // error
+    //   const x = 2; // error
+    // }
+
+    // 使用参数默认值时，函数不能有同名参数。
+    // 报错
+    // function foo(x, x, y = 1) {
+    //   // ...
+    // }
+
+    // 参数默认值不是传值的，而是每次都重新计算默认值表达式的值。
+    {
+      let x = 99;
+      function foo(p = x + 1) {
+        console.log(p);
+      }
+
+      foo() // 100
+
+      x = 100;
+      foo() // 101
+    }
+
+    /**
+     * 与解构赋值结合使用
+     * 参数默认值可以与解构赋值的默认值，结合起来使用。
+     * **/
+    {
+      function foo({ x, y = 5 } = {}) {
+        console.log(x, y)
+      }
+      foo({}) // undefined 5
+      foo({ x: 1 }) // 1 5
+      foo({ x: 1, y: 2 }) // 1 2
+      foo()  // undefined 5
+    }
+
+    {
+      function fetch(url, { body = '', method = 'GET', headers = {} } = {}) {
+        console.log(method)
+      }
+      fetch('http://example.com', {}); // GET
+    }
+
+    // 函数的length属性，指定了默认值以后，函数的length属性，将返回没有指定默认值的参数个数
+    (function (a) { }).length; // 1
+    (function (a = 5) { }).length; // 0
+    (function (a, b, c = 5) { }).length; // 2
+    // 如果设置了默认值的参数不是尾参数，那么length属性也不再计入后面的参数了。
+    (function (a = 0, b, c) { }).length; // 0
+    (function (a, b = 1, c) { }).length; // 1
+
+    /**
+     * 作用域
+     * 一旦设置了参数的默认值，函数进行声明初始化时，参数会形成一个单独的作用域, 等到初始化结束，这个作用域就会消失
+     * **/
+    {
+      // 参数y的默认值等于变量x。调用函数f时，参数形成一个单独的作用域。在这个作用域里面，默认值变量x指向第一个参数x，而不是全局变量x，所以输出是2。
+      var x = 1;
+      function f(x, y = x) {
+        console.log(y)
+      }
+      f(2); // 2
+    }
+    {
+      // 函数f调用时，参数y = x形成一个单独的作用域。这个作用域里面，变量x本身没有定义，所以指向外层的全局变量x。函数调用时，函数体内部的局部变量x影响不到默认值变量x。
+      let x = 1;
+      function f(y = x) {
+        let x = 2;
+        console.log(y);
+      }
+      f(); // 1
+    }
+  </script>
+</body>
+
+</html>

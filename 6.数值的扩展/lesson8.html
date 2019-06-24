@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /**
+     * 指数运算符
+     * 指数运算符的一个特点是右结合，而不是常见的左结合。多个指数运算符连用时，是从最右边开始计算的。
+     * **/
+    2 ** 2 // 4
+    2 ** 3 // 8
+
+    // 多个指数连用
+    // 相当于 2 ** (3 ** 2)
+    2 ** 3 ** 2 // 
+
+    // 指数运算符可以与等号结合，形成一个新的赋值运算符（**=）。
+    let a = 1.5;
+    a **= 2;
+    // 等同于 a = a * a;
+
+    let b = 4;
+    b **= 3;
+    // 等同于 b = b * b * b;
+
+    // V8 引擎的指数运算符与Math.pow的实现不相同，对于特别大的运算结果，两者会有细微的差异。
+    Math.pow(99, 99)
+    // 3.697296376497263e+197
+
+    99 ** 99
+    // 3.697296376497268e+197
+  </script>
+</body>
+
+</html>

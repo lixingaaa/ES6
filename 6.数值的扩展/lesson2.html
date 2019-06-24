@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /**
+     * Number.isFinite() 用来检查一个数值是否为有限的（finite），即不是Infinity。对于非数值一律返回false
+     * Number.isNaN() 用来检查一个值是否为NaN。只有对于NaN才返回true，非NaN一律返回false。
+     * **/
+    // 检查一个数值是否为有限的
+    Number.isFinite(15); // true
+    Number.isFinite(0.8); // true
+    Number.isFinite(NaN); // false
+    Number.isFinite(Infinity); // false
+    Number.isFinite(-Infinity); // false
+    Number.isFinite('foo'); // false
+    Number.isFinite('15'); // false
+    Number.isFinite(true); // false
+    // 检查一个值是否为NaN, 如果参数类型不是NaN，Number.isNaN一律返回false
+    Number.isNaN(NaN) // true
+    Number.isNaN(15) // false
+    Number.isNaN('15') // false
+    Number.isNaN(true) // false
+    Number.isNaN(9 / NaN) // true
+    Number.isNaN('true' / 0) // true
+    Number.isNaN('true' / 'true') // true
+  </script>
+</body>
+
+</html>

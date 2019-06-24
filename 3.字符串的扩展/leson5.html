@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /**
+     * 模板字符串
+     * 模板字符串（template string）是增强版的字符串，用反引号（`）标识。它可以当作普通字符串使用，也可以用来定义多行字符串，或者在字符串中嵌入变量。
+     * 如果使用模板字符串表示多行字符串，所有的空格和缩进都会被保留在输出之中。
+     * 模板字符串中嵌入变量，需要将变量名写在${}之中。
+     * 大括号内部可以放入任意的 JavaScript 表达式，可以进行运算，以及引用对象属性。
+     * 模板字符串之中还能调用函数。
+     **/
+
+    {
+      // 普通字符串
+      `In JavaScript '\n' is a line-feed.`
+        // 多行字符串
+        `In JavaScript this is
+      not legal.`
+      // 字符串中嵌入变量
+      let name = "Bob", time = "today";
+      'hello ${name}, how are you ${time}?'
+    }
+
+    {
+      //放入表达式
+      let x = 1;
+      let y = 2;
+
+      `${x} + ${y} = ${x + y}`
+        // "1 + 2 = 3"
+
+        `${x} + ${y * 2} = ${x + y * 2}`
+      // "1 + 4 = 5"
+
+      let obj = { x: 1, y: 2 };
+      `${obj.x + obj.y}`
+      // "3"
+    }
+
+    {
+      // 调用函数
+      function fn() {
+        return "hello world";
+      }
+      `foo ${fn()} bar`
+      // foo Hello World bar
+    }
+
+    {
+      // 模板字符串嵌套
+      const tmpl = addrs => `
+        <table>
+        ${addrs.map(addr => `
+          <tr><td>${addr.first}</td></tr>
+          <tr><td>${addr.last}</td></tr>
+        `).join('')}
+        </table>
+      `;
+    }
+
+    {
+      // 如果需要引用模板字符串本身，在需要时执行，可以写成函数
+      let func = (name) => `Hello ${name}!`;
+      func('Jack') // "Hello Jack!"
+    }
+  </script>
+</body>
+
+</html>
