@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /**
+     * Array.of(), 用于将一组值，转换为数组
+     * **/
+    {
+      Array.of(3, 11, 8); // [3, 11, 8]
+      Array.of(3); // [3]
+      Array.of(3).length; // 1
+    }
+
+    {
+      // 主要目的，是弥补数组构造函数Array()的不足。因为参数个数的不同，会导致Array()的行为有差异。
+      // 只有当参数个数不少于 2 个时，Array()才会返回由参数组成的新数组。参数个数只有一个时，实际上是指定数组的长度。
+      Array(); // []
+      Array(3); // [, , ,]
+      Array(3, 11, 8); // [3, 11, 8]
+    }
+
+    {
+      // Array.of基本上可以用来替代Array()或new Array()，并且不存在由于参数不同而导致的重载。它的行为非常统一。
+      // Array.of基本上可以用来替代Array()或new Array()，并且不存在由于参数不同而导致的重载。它的行为非常统一。
+      Array.of(); // []
+      Array.of(undefined); // [undefined]
+      Array.of(1); // [1]
+      Array.of(1, 2); // [1, 2]
+    }
+
+    {
+      // Array.of方法可以用下面的代码模拟实现。
+      return [].slice.call(arguments);
+    }
+  </script>
+</body>
+
+</html>

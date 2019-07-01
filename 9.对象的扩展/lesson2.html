@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /**
+     * 属性名表达式
+     * **/
+    {
+      // ES6允许用表示式作为对象的属性名，即把表达式放在方括号内
+      let propkey = "foo";
+      let obj = {
+        [propkey]: true,
+        ['a' + 'bc']: 123
+      }
+      obj; // {foo: true, abc: 123}
+
+      let lastword = 'last word';
+      const a = {
+        'first word': 'hello',
+        [lastword]: 'world'
+      }
+      a['first word'];
+      a[lastword];
+      a['last word'];
+    }
+
+    {
+      // 表达式定义方法名
+      let obj = {
+        ['h' + 'ello']() {
+          console.log('hello world')
+        }
+      }
+
+      obj.hello(); // hello world
+    }
+
+    {
+      // 属性名表达式与简介表达式，不能同时使用
+      // 报错
+      // const foo = "bar";
+      // const bar = "abc";
+      // const baz = { [foo] };
+
+      // 正确
+      const foo = "bar";
+      const baz = { [foo]: "abc" }
+    }
+
+    {
+      // 属性名表达式如果是一个对象，默认情况下会自动将对象转化为字符串 [object Object]
+      const keyA = { a: 1 }
+      const keyB = { b: 2 }
+
+      const myObject = {
+        [keyA]: 'valueA',
+        [keyB]: 'valueB'
+      };
+
+      // [keyA]和[keyB]得到的都是[object Object]，所以[keyB]会把[keyA]覆盖掉，而myObject最后只有一个[object Object]属性。
+      myObject; // Object {[object Object]: "valueB"}
+    }
+  </script>
+</body>
+
+</html>
