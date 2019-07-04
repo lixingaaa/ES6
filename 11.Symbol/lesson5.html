@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /**
+     * 属性名的遍历
+     * Symbol 作为属性名，该属性不会出现在for...in、for...of循环中，也不会被Object.keys()、Object.getOwnPropertyNames()、JSON.stringify()返回。
+     * 但是，它也不是私有属性，有一个Object.getOwnPropertySymbols方法，可以获取指定对象的所有 Symbol 属性名。
+     **/
+    {
+      // Object.getOwnPropertySymbols方法返回一个数组，成员是当前对象的所有用作属性名的 Symbol 值。
+      const obj = {};
+      let a = Symbol('a');
+      let b = Symbol('b');
+
+      obj[a] = 'Hello';
+      obj[b] = 'World';
+
+      const objectSymbols = Object.getOwnPropertySymbols(obj);
+      objectSymbols; // [Symbol(a), Symbol(b)]
+    }
+
+    {
+      // Object.getOwnPropertySymbols方法与for...in循环、Object.getOwnPropertyNames方法进行对比的例子。
+      const obj = {};
+      let foo = Symbol("foo");
+
+      Object.defineProperty(obj, foo, {
+        value: 'foobar'
+      });
+
+      for (let i in obj) {
+        console.log(i); // 无输出
+      }
+
+      Object.getOwnPropertyNames(obj); // []
+
+      Object.getOwnPropertySymbols(obj); // [Symbol(foo)]
+    }
+  </script>
+</body>
+
+</html>

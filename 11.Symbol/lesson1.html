@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /**
+     * 概述
+     * ES5 的对象属性名都是字符串，这容易造成属性名的冲突。比如，你使用了一个他人提供的对象，但又想为这个对象添加新的方法（mixin 模式），新方法的名字就有可能与现有方法产生冲突。
+     * ES6 引入了一种新的原始数据类型Symbol, 表示独一无二的值。
+     * Symbol 值通过Symbol函数生成。凡是属性名属于 Symbol 类型，就都是独一无二的，可以保证不会与其他属性名产生冲突。
+     * 注意:Symbol函数前不能使用new命令，否则会报错。这是因为生成的 Symbol 是一个原始类型的值，不是对象。由于 Symbol 值不是对象，所以不能添加属性。基本上，它是一种类似于字符串的数据类型。
+     **/
+    {
+      let s = Symbol();
+      typeof s; // symbol
+    }
+
+    {
+      // Symbol函数可以接受一个字符串作为参数，表示对 Symbol 实例的描述，主要是为了在控制台显示，或者转为字符串时，比较容易区分。
+      let s1 = Symbol('foo');
+      let s2 = Symbol('bar');
+      s1;  // Symbol(foo)
+      s2;  // Symbol(bar)
+      s1.toString();  // "Symbol(foo)"
+      s2.toString();  // "Symbol(bar)"
+    }
+
+    {
+      // 如果 Symbol 的参数是一个对象，就会调用该对象的toString方法，将其转为字符串，然后才生成一个 Symbol 值。
+      const obj = {
+        toString() {
+          return 'abc'
+        }
+      };
+      const sym = Symbol(obj)
+      sym; // Symbol(abc)
+    }
+
+    {
+      // 注意，Symbol函数的参数只是表示对当前 Symbol 值的描述，因此相同参数的Symbol函数的返回值是不相等的。
+      // 没有参数情况下
+      let s1 = Symbol();
+      let s2 = Symbol();
+      s1 === s2; // false
+
+      // 有参数的情况
+      let x1 = Symbol('foo');
+      let x2 = Symbol('foo')
+      x1 === x2; // false
+    }
+
+    {
+      let sym = Symbol("My symbol");
+      // "your symbol is " + sym; // can't convert symbol to string
+
+      // Symbol 值可以显式转为字符串。
+      let sym_str = Symbol('My symbol');
+      String(sym_str);  // Symbol(My symbol)
+      sym_str.toString(); // Symbol(My symbol)
+
+      // Symbol 值也可以转为布尔值
+      let sys_bool = Symbol();
+      Boolean(sys_bool); // true
+
+      // 不能转为数值
+      // Number(sym); // Cannot convert a Symbol value to a number
+    }
+  </script>
+</body>
+
+</html>
