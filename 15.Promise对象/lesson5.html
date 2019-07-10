@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /**
+     * Promise.prototype.finally()
+     * finally 方法用于指定不管Promise 对象最后状态如何, 都会执行的操作
+     * **/
+    {
+      // 服务器使用 Promise 处理请求，然后使用finally方法关掉服务器。
+      // server.listen(port)
+      //   .then(function () {
+      //     // ...
+      //   })
+      //   .finally(server.stop);
+    }
+
+    {
+      // finally本质上是then方法的特例
+      // 如果不使用finally方法，同样的语句需要为成功和失败两种情况各写一次。有了finally方法，则只需要写一次。
+      // promise
+      //   .finally(() => {
+      //     // 语句
+      //   });
+
+      // // 等同于
+      // promise
+      //   .then(
+      //     result => {
+      //       // 语句
+      //       return result;
+      //     },
+      //     error => {
+      //       // 语句
+      //       throw error;
+      //     }
+      //   );
+    }
+
+    {
+      Promise.prototype.finally = function (callback) {
+        let P = this.constructor;
+        return this.then(
+          value => P.resolve(callback()).then(() => value),
+          reason => P.resolve(callback()).then(() => { throw reason })
+        );
+      };
+    }
+
+    {
+      // finally方法总是会返回原来的值
+      // resolve 的值是 undefined
+      Promise.resolve(2).then(() => { }, () => { })
+
+      // resolve 的值是 2
+      Promise.resolve(2).finally(() => { })
+
+      // reject 的值是 undefined
+      Promise.reject(3).then(() => { }, () => { })
+
+      // reject 的值是 3
+      Promise.reject(3).finally(() => { })
+    }
+  </script>
+</body>
+
+</html>
