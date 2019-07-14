@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /**
+     * Generator.prototype.throw()
+     * Generator 函数返回的遍历器对象，都有一个throw方法，可以在函数体外抛出错误，然后在 Generator 函数体内捕获。
+     **/
+    {
+      var g = function* () {
+        try {
+          yield;
+        } catch (e) {
+          console.log('内部捕获', e)
+        }
+      };
+      var i = g();
+      i.next()
+
+      try {
+        i.throw('a');
+        i.throw('b');
+      } catch (e) {
+        console.log('外部捕获', e);
+      }
+      // 遍历器对象i连续抛出两个错误。第一个错误被 Generator 函数体内的catch语句捕获。
+      // i第二次抛出错误，由于 Generator 函数内部的catch语句已经执行过了，不会再捕捉到这个错误了，所以这个错误就被抛出了 Generator 函数体，被函数体外的catch语句捕获。
+      // 内部捕获 a
+      // 外部捕获 b
+    }
+
+    {
+      // throw方法可以接受一个参数，该参数会被catch语句接收，建议抛出Error对象的实例。
+      var g = function* () {
+        try {
+          yield;
+        } catch (e) {
+          console.log(e);
+        }
+      };
+
+      var i = g();
+      i.next();
+      i.throw(new Error('出错了!'))
+    }
+
+    {
+      // 如果 Generator 函数内部没有部署try...catch代码块，那么throw方法抛出的错误，将被外部try...catch代码块捕获。
+      var g = function* () {
+        while (true) {
+          yield;
+          console.log('内部捕获', e);
+        }
+      };
+
+      var i = g();
+      i.next();
+
+      try {
+        i.throw('a');
+        i.throw('b');
+      } catch (e) {
+        console.log('外部捕获', e);
+      }
+      // 外部捕获 a
+    }
+
+    {
+      // 如果 Generator 函数内部和外部，都没有部署try...catch代码块，那么程序将报错，直接中断执行。
+      var gen = function* gen() {
+        yield console.log('hello');
+        yield console.log('world');
+      }
+
+      var g = gen();
+      g.next();
+      g.throw();
+      // hello
+      // Uncaught undefined
+    }
+  </script>
+</body>
+
+</html>
