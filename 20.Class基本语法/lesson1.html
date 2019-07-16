@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /**
+     * 简介
+     **/
+    {
+      // JavaScript 语言中，生成实例对象的传统方法是通过构造函数
+      function Point(x, y) {
+        this.x = x;
+        this.y = y;
+      }
+
+      Point.prototype.toString = function () {
+        return '(' + this.x + ', ' + this.y + ')';
+      };
+
+      var p = new Point(1, 2);
+
+      // 上面的代码用 ES6 的class改写，
+      class Point {
+        constructor(x, y) {
+          this.x = x;
+          this.y = y;
+        }
+        toString() {
+          return '(' + this.x + ', ' + this.y + ')';
+        }
+      }
+    }
+
+    {
+      // 使用的时候，也是直接对类使用new命令，跟构造函数的用法完全一致。
+      class Bar {
+        doStuff() {
+          console.log('stuff');
+        }
+      }
+    }
+  </script>
+</body>
+
+</html>

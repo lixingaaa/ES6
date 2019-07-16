@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /**
+     * Thunk 函数
+     * Thunk 函数是自动执行 Generator 函数的一种方法。
+     * **/
+    {
+      // 参数的求值策略
+
+      function f(m) {
+        return m * 2;
+      }
+      let x = 1;
+      f(x + 5);
+
+      // 传值调用,即在进入函数体之前，就计算x + 5的值（等于 6），再将这个值传入函数f。C 语言就采用这种策略。
+      // 等同于
+      f(6);
+
+      // 传名调用, 即直接将表达式x + 5传入函数体，只在用到它的时候求值。Haskell 语言采用这种策略。
+      // 等同
+      (x + 5) * 2;
+    }
+
+    {
+      // Thunk函数的含义
+      // 编译器的“传名调用”实现，往往是将参数放到一个临时函数之中，再将这个临时函数传入函数体。这个临时函数就叫做 Thunk 函数。
+      function f(m) {
+        return m * 2;
+      }
+      let x = 1;
+
+      f(x + 5);
+
+      // 等同于
+      let thunk = function () {
+        return x + 5;
+      }
+
+      function f(thunk) {
+        // return thunk() * 2;
+      }
+      // 函数 f 的参数x + 5被一个函数替换了。凡是用到原参数的地方，对Thunk函数求值即可。
+      // 这就是 Thunk 函数的定义，它是“传名调用”的一种实现策略，用来替换某个表达式。
+    }
+
+    {
+      // JavaScript语言的Thunk函数
+      // JavaScript 语言是传值调用，它的 Thunk 函数含义有所不同。在 JavaScript 语言中，Thunk 函数替换的不是表达式，而是多参数函数，将其替换成一个只接受回调函数作为参数的单参数函数。
+      // 正常版本的readFile（多参数版本）
+      // fs.readFile(fileName, callback);
+
+      // Thunk版本的readFile（单参数版本）
+      // var Thunk = function (fileName) {
+      //   return function (callback) {
+      //     return fs.readFile(fileName, callback);
+      //   }
+      // }
+
+      // var readFileThunk = Thunk(fileName);
+      // readFileThunk(callback);
+
+      // 任何函数，只要参数有回调函数，就能写成 Thunk 函数的形式
+      // ES5版本
+      const Thunk1 = function (fn) {
+        return function () {
+          var args = Array.prototype.slice.call(arguments);
+          return function (callback) {
+            args.push(callback);
+            return fn.apply(this, args)
+          }
+        }
+      }
+
+      // ES6版本
+      const Thunk2 = function (fn) {
+        return function (...args) {
+          return function (callback) {
+            return fn.call(this, ...args, callback);
+          }
+        }
+      }
+
+      // 使用上面的转换器，生成fs.readFile的 Thunk 函数。
+      // let readFileThunk = Thunk2(fs.readFile);
+      // readFileThunk(fileA)(callback);
+    }
+
+    {
+      // function f(a, cb) {
+      //   cb(a);
+      // }
+      // const ft = Thunk(f);
+      // ft(1)(console.log)
+    }
+
+    {
+      // Thunkify 模块
+      function thunkify(fn) {
+        return function () {
+          var args = new Array(arguments.length);
+          var ctx = this;
+          for (var i = 0; i < args.length; ++i) {
+            args[i] = arguments[i];
+          }
+          return function (done) {
+            var called;
+            args.push(function () {
+              if (called) return;
+              called = true;
+              done.apply(null, arguments);
+            });
+
+            try {
+              fn.apply(ctx, args);
+            } catch (err) {
+              done(err);
+            }
+          }
+        }
+      }
+
+      // 它的源码主要多了一个检查机制，变量called确保回调函数只运行一次
+      function f(a, b, callback) {
+        var sum = a + b;
+        callback(sum);
+        callback(sum);
+      }
+
+      var ft = thunkify(f);
+      var print = console.log.bind(console)
+      ft(1, 2)(print);
+      // 由于thunkify只允许回调函数执行一次，所以只输出一行结果。
+      // 3
+    }
+
+    {
+      // Generator 函数的流程管理, Thunk 函数现在可以用于 Generator 函数的自动流程管理。
+      // Generator 函数可以自动执行。
+      function* gen() {
+        yield 1;
+        yield 2;
+        yield 3;
+      }
+      var g = gen();
+      var res = g.next();
+      while (!res.done) {
+        console.log(res.value);
+        res = g.next();
+      }
+
+      // 异步操作
+      // let fs = require('fs');
+      // let thunkify = require('thunkify');
+      // let readFileThunk = thunkify(fs.readFile);
+
+      // let gen = function* () {
+      //   let r1 = yield readFileThunk('/etc/fstab');
+      //   console.log(r1.toString());
+      //   let r2 = yield readFileThunk('/etc/shells');
+      //   console.log(r2.toString());
+      // };
+    }
+
+    {
+      // Thunk函数的自动化流程管理
+    }
+  </script>
+</body>
+
+</html>
