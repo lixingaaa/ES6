@@ -27,15 +27,15 @@
       var p = new Point(1, 2);
 
       // 上面的代码用 ES6 的class改写，
-      class Point {
-        constructor(x, y) {
-          this.x = x;
-          this.y = y;
-        }
-        toString() {
-          return '(' + this.x + ', ' + this.y + ')';
-        }
-      }
+      // class Point {
+      //   constructor(x, y) {
+      //     this.x = x;
+      //     this.y = y;
+      //   }
+      //   toString() {
+      //     return '(' + this.x + ', ' + this.y + ')';
+      //   }
+      // }
     }
 
     {
@@ -45,6 +45,229 @@
           console.log('stuff');
         }
       }
+      var b = new Bar();
+      b.doStuff();
+    }
+
+    {
+      // constructor 方法
+      // constructor方法是类的默认方法，通过new命令生成对象实例时，自动调用该方法。一个类必须有constructor方法，如果没有显式定义，一个空的constructor方法会被默认添加。
+      // class Point {}
+      // 等同于
+      // class Point {
+      //   constructor() {}
+      // }
+
+      // constructor方法默认返回实例对象（即this），完全可以指定返回另外一个对象。
+      class Foo {
+        constructor() {
+          return Object.create(null);
+        }
+      }
+
+      new Foo() instanceof Foo;
+      // constructor函数返回一个全新的对象，结果导致实例对象不是Foo类的实例。
+      // false 
+
+      // 类必须用new调用，否则会报错。这是它跟普通构造函数的一个主要区别，后者不用new也可以执行。
+      // Foo(); // Class constructor Foo cannot be invoked without 'new'
+    }
+
+    {
+      // 类的实例
+      // 定义类
+      class Point {
+
+        constructor(x, y) {
+          this.x = x;
+          this.y = y;
+        }
+
+        toString() {
+          return '(' + this.x + ', ' + this.y + ')';
+        }
+      }
+
+      let point = new Point(2, 3);
+      point.toString(2, 3); // (2, 3)
+      point.hasOwnProperty('x'); // true
+      point.hasOwnProperty('toString'); // false
+      point.__proto__.hasOwnProperty('toString'); // true
+
+      // 与 ES5 一样，类的所有实例共享一个原型对象。
+      let p1 = new Point(1, 2);
+      let p2 = new Point(2, 3);
+      // p1和p2都是Point的实例，它们的原型都是Point.prototype，所以__proto__属性是相等的。
+      p1.__proto__ === p2.__proto__; // true
+
+      // 通过实例的__proto__属性为“类”添加方法
+      p2.__proto__.printName = function () {
+        console.log('hello world!')
+      };
+      p1.printName(); // hello world!
+      p2.printName(); // hello world!
+
+      // 在p1的原型上添加了一个printName方法，由于p1的原型就是p2的原型，因此p2也可以调用这个方法。而且，此后新建的实例p3也可以调用这个方法。
+      // 这意味着，使用实例的__proto__属性改写原型，必须相当谨慎，不推荐使用，因为这会改变“类”的原始定义，影响到所有实例。
+      let p3 = new Point();
+      p3.printName(); // hello world!
+    }
+
+    {
+      // 取值函数(getter) 和 存值函数 (setter)
+      // 在“类”的内部可以使用get和set关键字，对某个属性设置存值函数和取值函数，拦截该属性的存取行为。
+      class MyClass {
+        constructor() {}
+
+        get prop() {
+          return 'getter';
+        }
+
+        set prop(value) {
+          console.log('setter: ' + value)
+        }
+      }
+
+      let inst = new MyClass();
+      // prop属性有对应的存值函数和取值函数，因此赋值和读取行为都被自定义了。
+      inst.prop = 123; // setter: 123
+      inst.prop; // getter
+
+      // 存值函数和取值函数是设置在属性的 Descriptor 对象上的。
+      class CustomHTMLElement {
+        constructor(element) {
+          this.element = element;
+        }
+
+        get html() {
+          return this.element.innerHTML;
+        }
+
+        set html(value) {
+          this.element.innerHTML = value;
+        }
+      }
+
+      var descriptor = Object.getOwnPropertyDescriptor(
+        CustomHTMLElement.prototype, "html"
+      );
+
+      "get" in descriptor // true
+        "set" in descriptor // true
+    }
+
+    {
+      // 属性表达式
+      // 类的属性名，可以采用表达式。
+      let methodName = "getArea";
+      // Square类的方法名getArea，是从表达式得到的。
+      class Square {
+        constructor(length) {}
+
+        [methodName]() {}
+      }
+    }
+
+    {
+      // Class表达式
+      // 与函数一样，类也可以使用表达式的形式定义。
+      let person = new class {
+        constructor(name) {
+          this.name = name;
+        }
+
+        sayName() {
+          console.log(this.name);
+        }
+      }('张三');
+
+      // person是一个立即执行的类的实例。
+      person.sayName(); // "张三"
+    }
+
+    {
+      // 注意点
+      // (1) 严格模式, 类和模块的内部，默认就是严格模式，所以不需要使用use strict指定运行模式。只要你的代码写在类或模块之中，就只有严格模式可用。
+
+      // (2) 不存在提升, 类不存在变量提升（hoist），这一点与 ES5 完全不同。
+      // new Foo(); // ReferenceError
+      // class Foo {}
+
+      // (3) name 属性, ES6 的类只是 ES5 的构造函数的一层包装，所以函数的许多特性都被Class继承，包括name属性。
+      class Point {}
+      // name属性总是返回紧跟在class关键字后面的类名。
+      Point.name // "Point"
+
+      // (4) Generator 方法, 如果某个方法之前加上星号（*），就表示该方法是一个 Generator 函数。
+      class Foo {
+        constructor(...args) {
+            this.args = args;
+          }
+          *[Symbol.iterator]() {
+            for (let arg of this.args) {
+              yield arg;
+            }
+          }
+      }
+      // Foo类的Symbol.iterator方法前有一个星号，表示该方法是一个 Generator 函数。Symbol.iterator方法返回一个Foo类的默认遍历器，for...of循环会自动调用这个遍历器。
+      for (let x of new Foo('hello', 'world')) {
+        console.log(x);
+      }
+
+      // (5) this指向, 类的方法内部如果含有this，它默认指向类的实例。但是，必须非常小心，一旦单独使用该方法，很可能报错。
+      class Logger {
+        printName(name = 'there') {
+          this.print(`hello ${name}`);
+        }
+
+        print(text) {
+          console.log(text)
+        }
+      }
+      const logger = new Logger();
+      const {
+        printName
+      } = logger;
+      // printName方法中的this，默认指向Logger类的实例。但是，如果将这个方法提取出来单独使用，
+      // this会指向该方法运行时所在的环境（由于 class 内部是严格模式，所以 this 实际指向的是undefined），从而导致找不到print方法而报错。
+      printName(); // TypeError: Cannot read property 'print' of undefined
+
+      // 解决方法
+      // 在构造函数中绑定this
+      class Logger {
+        constructor() {
+          this.printName = this.printName.bind(this);
+        }
+      }
+      // 使用箭头函数
+      class Obj {
+        constructor() {
+          this.getThis = () => this;
+        }
+      }
+
+      const myObj = new Obj();
+      myObj.getThis() === myObj // true
+      // 使用Proxy，获取方法的时候，自动绑定this。
+      function selfish(target) {
+        const cache = new WeakMap();
+        const handler = {
+          get(target, key) {
+            const value = Reflect.get(target, key);
+            if (typeof value !== 'function') {
+              return value;
+            }
+            if (!cache.has(value)) {
+              cache.set(value, value.bind(target));
+            }
+            return cache.get(value);
+          }
+        };
+        const proxy = new Proxy(target, handler);
+        return proxy;
+      }
+
+      const logger = selfish(new Logger());
     }
   </script>
 </body>

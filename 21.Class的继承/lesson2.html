@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /**
+     * Object.getPrototypeOf()
+     * Object.getPrototypeOf方法可以用来从子类上获取父类。
+     **/
+    {
+      class Point {}
+      class ColorPoint extends Point {}
+      Object.getPrototypeOf(ColorPoint) === Point; // true
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /**
+     * 私有方法和私有属性
+     * 私有方法和私有属性，是只能在类的内部访问的方法和属性，外部不能访问。这是常见需求，有利于代码的封装，但 ES6 不提供，只能通过变通方法模拟实现。
+     **/
+    {
+      // 现有解决方案
+      // 一种做法是在命名上加以区别。_bar方法前面的下划线，表示这是一个只限于内部使用的私有方法。但是，这种命名是不保险的，在类的外部，还是可以调用到这个方法。
+      class Widget1 {
+        // 共有方法
+        foo(baz) {
+          this._bar(baz);
+        }
+
+        // 私有方法
+        _bar(baz) {
+          return this.snaf = baz;
+        }
+      }
+
+      // 将私有方法移出模块，因为模块内部的所有方法都是对外可见的。foo是公开方法，内部调用了bar.call(this, baz)。这使得bar实际上成为了当前模块的私有方法。
+      class Widget2 {
+        foo(baz) {
+          bar.call(this, baz);
+        }
+      }
+
+      function bar(baz) {
+        return this.snaf = baz;
+      }
+
+      // 利用Symbol值的唯一性，将私有方法的名字命名为一个Symbol值。bar和snaf都是Symbol值，一般情况下无法获取到它们，因此达到了私有方法和私有属性的效果。
+      // 但是也不是绝对不行，Reflect.ownKeys()依然可以拿到它们。
+      const bar = Symbol('bar');
+      const snaf = Symbol('snaf');
+
+      export default class myClass {
+
+        // 公有方法
+        foo(baz) {
+          this[bar](baz);
+        }
+
+        // 私有方法
+        [bar](baz) {
+          return this[snaf] = baz;
+        };
+      };
+
+      const inst = new myClass();
+
+      Reflect.ownKeys(myClass.prototype)
+      // [ 'constructor', 'foo', Symbol(bar) ]
+    }
+  </script>
+</body>
+
+</html>
