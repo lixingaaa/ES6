@@ -125,7 +125,112 @@
       }
 
       let b = new B();
+      // super.print()虽然调用的是A.prototype.print()，但是A.prototype.print()内部的this指向子类B的实例，导致输出的是2，而不是1。也就是说，实际上执行的是super.print.call(this)。
       b.m(); // 2
+    }
+
+    {
+      // 由于this指向子类实例，所以如果通过super对某个属性赋值，这时super就是this，赋值的属性会变成子类实例的属性。
+      class A {
+        constructor() {
+          this.x = 1;
+        }
+      }
+
+      class B extends A {
+        constructor() {
+          super();
+          this.x = 2;
+          super.x = 3;
+          // super.x赋值为3，这时等同于对this.x赋值为3。而当读取super.x的时候，读的是A.prototype.x，所以返回undefined。
+          console.log(super.x); // undefined
+          console.log(this.x); // 3
+        }
+      }
+      let c = new B();
+    }
+
+    {
+      class Parent {
+        static myMethod(msg) {
+          console.log('static', msg);
+        }
+
+        myMethod(msg) {
+          console.log('instance', msg);
+        }
+      }
+
+      class Child extends Parent {
+        static myMethod(msg) {
+          super.myMethod(msg);
+        }
+
+        myMethod(msg) {
+          super.myMethod(msg);
+        }
+      }
+
+      // super在静态方法之中指向父类，在普通方法之中指向父类的原型对象。
+      Child.myMethod(1); // static 1
+
+      var child = new Child();
+      child.myMethod(2); // instance 2
+    }
+
+    {
+      // 在子类的静态方法中通过super调用父类的方法时，方法内部的this指向当前的子类，而不是子类的实例。
+      class A {
+        constructor() {
+          this.x = 1;
+        }
+
+        static print() {
+          console.log(this.x);
+        }
+      }
+
+      class B extends A {
+        constructor() {
+          super();
+          this.x = 1;
+        }
+
+        static m() {
+          super.print();
+        }
+      }
+
+      // 静态方法B.m里面，super.print指向父类的静态方法。这个方法里面的this指向的是B，而不是B的实例。
+      B.x = 3;
+      B.m();
+    }
+
+    {
+      // 使用super的时候，必须显式指定是作为函数、还是作为对象使用，否则会报错。
+      class A {}
+
+      class B extends A {
+        constructor() {
+          super();
+          // console.log(super); 报错
+          // super.valueOf()表明super是一个对象，因此就不会报错。同时，由于super使得this指向B的实例，所以super.valueOf()返回的是一个B的实例。
+          console.log(super.valueOf() instanceof B); // true
+        }
+      }
+
+      let b = new B();
+    }
+
+    {
+      // 由于对象总是继承其他对象的，所以可以在任意一个对象中，使用super关键字。
+      var obj = {
+        toString() {
+          return "MyObject: " + super.toString();
+        }
+      };
+
+      obj.toString(); // MyObject: [object object]
     }
   </script>
 </body>
